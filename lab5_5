@@ -1,0 +1,82 @@
+package com.company;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.util.*;
+
+class Student {
+    private String name;
+    private Integer group;
+    private Integer mark;
+
+    Student(String n, Integer g, Integer m){
+        name = n;
+        group = g;
+        mark = m;
+    }
+
+    @Override
+    public String toString() {
+        return name + "\t" + group;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public Integer getGroup() {
+        return group;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        LinkedList<Student> studentList2 = new LinkedList();
+        LinkedList<Student> studentList3 = new LinkedList();
+        LinkedList<Student> studentList4 = new LinkedList();
+        LinkedList<Student> studentList5 = new LinkedList();
+        Reader reader = new FileReader("a.txt");
+        LineNumberReader lineNumberReader = new LineNumberReader(reader);
+        String line = lineNumberReader.readLine();
+        while(line != null){
+            String[] s = line.split(" ");
+            Student student = new Student(s[0], Integer.parseInt(s[1]), Integer.parseInt(s[2]));
+            if (student.getMark() == 2) studentList2.add(student);
+            else if (student.getMark() == 3) studentList3.add(student);
+            else if (student.getMark() == 4) studentList4.add(student);
+            else studentList5.add(student);
+            line = lineNumberReader.readLine();
+        }
+
+        System.out.println("Студенты, получившие отметку 2\n Имя группа");
+        studentList2.forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Студенты, получившие отметку 3\n Имя группа");
+        studentList3.forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Студенты, получившие отметку 4\n Имя группа");
+        studentList4.forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("Студенты, получившие отметку 5\n Имя группа");
+        studentList5.forEach(System.out::println);
+
+    }
+}
