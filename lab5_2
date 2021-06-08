@@ -1,0 +1,78 @@
+package com.company;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.util.*;
+
+class Student {
+    private String name;
+    private Integer group;
+    private Integer mark;
+
+    Student(String n, Integer g, Integer m){
+        name = n;
+        group = g;
+        mark = m;
+    }
+
+    @Override
+    public String toString() {
+        return name + "\t" + group + "\t" + mark;
+    }
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public Integer getGroup() {
+        return group;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        LinkedList<Student> studentList = new LinkedList();
+        Reader reader = new FileReader("a.txt");
+        LineNumberReader lineNumberReader = new LineNumberReader(reader);
+        String line = lineNumberReader.readLine();
+        while(line != null){
+            String[] s = line.split(" ");
+            Student student = new Student(s[0], Integer.parseInt(s[1]), Integer.parseInt(s[2]));
+            studentList.add(student);
+            line = lineNumberReader.readLine();
+        }
+
+        studentList.sort(
+                new Comparator<Student>() {
+                    @Override
+                    public int compare(Student t1, Student t2) {
+                        if (t1.getMark() < t2.getMark()) {
+                            return 1;
+                        }
+                        if (t1.getMark() > t2.getMark()) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                });
+
+
+        System.out.println("Имя группа оценка");
+        studentList.forEach(System.out::println);
+    }
+}
