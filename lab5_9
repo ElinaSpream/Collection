@@ -1,0 +1,108 @@
+package com.company;
+
+import java.io.*;
+import java.util.*;
+
+class Flight {
+    private int id;
+    private String destination;
+    private String time;
+    private int exitId;
+
+    Flight(int i, String d, String t, int e){
+        id = i;
+        destination = d;
+        time = t;
+        exitId = e;
+    }
+
+    @Override
+    public String toString() {
+        return "Flight { " +
+                "№" + id +
+                ", destination = '" + destination + '\'' +
+                ", time '" + time + '\'' +
+                ", exit №" + exitId +
+                '}';
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public Integer getExitId() {
+        return exitId;
+    }
+
+    public void setExitId(Integer exitId) {
+        this.exitId = exitId;
+    }
+}
+
+public class Main {
+    public static void main(String[] argv) throws IOException {
+        String des = "";
+        LinkedList<Flight> flightList = new LinkedList();
+        Reader reader = new FileReader("a.txt");
+        LineNumberReader lineNumberReader = new LineNumberReader(reader);
+        String line = lineNumberReader.readLine();
+        while(line != null){
+            String[] s = line.split(" ");
+            Flight flight = new Flight(Integer.parseInt(s[0]), s[1], s[2], Integer.parseInt(s[3]));
+
+            flightList.add(flight);
+            line = lineNumberReader.readLine();
+        }
+
+        flightList.sort(new Comparator<Flight>(){
+            public int compare(Flight f1, Flight f2) {
+                return f1.getDestination().compareTo(f2.getDestination());
+            }
+        });
+
+        System.out.println("Рейсы\n \t \t № \t \t \t Назначение \t Время \t \t №выхода");
+        flightList.forEach(System.out::println);
+        System.out.println();
+
+        ArrayList<List<Flight>> f = new ArrayList<>(100500);
+
+        int k = 0;
+        des = flightList.get(k).getDestination();
+        int i = 0;
+        while (i < flightList.size()){
+            while ((des.equals(flightList.get(i).getDestination())) && (i < flightList.size()-1))
+                i++;
+            //System.out.println("Рейсы в " + des);
+            f.add(flightList.subList(k,i));
+            //System.out.println(flightList.subList(k, i));
+            k = i;
+            des = flightList.get(k).getDestination();
+            i++;
+        }
+
+        for (i = 0; i < f.size(); i++) {
+            System.out.println("Рейсы с назначением " + f.get(i).get(0).getDestination());
+            System.out.println(f.get(i));
+        }
+    }
+}
